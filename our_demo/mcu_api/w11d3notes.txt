@@ -1,0 +1,6 @@
+Query methods
+    findOne
+        can only return 1 record
+    findAll
+        always returns an array
+    findByPk

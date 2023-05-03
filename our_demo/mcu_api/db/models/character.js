@@ -11,6 +11,17 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
+      Character.belongsTo(models.Affiliation, {
+        foreignKey: 'affilId' // affiliationId
+      })
+        // JOIN Affiliations ON (Characters.affilId = Affiliations.id)
+      Character.belongsToMany(models.Ability, {
+        through: models.CharacterAbility,
+        foreignKey: 'characterId',
+        otherKey: 'abilityId'
+      })
+        // JOIN CharacterAbilities ON (Characters.id = CharacterAbilities.characterId)
+        // JOIN Abilites ON (CharacterAbilities.abilityId = Abilities.id)
     }
   }
   Character.init({
@@ -36,7 +47,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     powered: DataTypes.BOOLEAN,
     alias: DataTypes.STRING,
-    popularity: DataTypes.NUMERIC(4, 2)
+    popularity: DataTypes.NUMERIC(4, 2),
+    affilId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Character',
