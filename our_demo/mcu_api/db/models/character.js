@@ -45,8 +45,29 @@ module.exports = (sequelize, DataTypes) => {
         max: 99
       }
     },
-    powered: DataTypes.BOOLEAN,
-    alias: DataTypes.STRING,
+    powered: {
+      type: DataTypes.BOOLEAN,
+      validate: {
+        isPowered(value) {
+          if (value === true && !this.alias) {
+            throw new Error('Powered characters must have an alias')
+          }
+        }
+      }
+    },
+    alias: {
+      type: DataTypes.STRING,
+      // validate: {
+      //   isPowered(value) {
+      //     console.log(this.powered)
+      //     console.log(value)
+      //     if (this.powered && !value) {
+      //       console.log('-=-=-=-=-=-=-=-=-==-=-')
+      //       throw new Error('If the character has powers, they must have an alias')
+      //     }
+      //   }
+      // }
+    },
     popularity: DataTypes.NUMERIC(4, 2),
     affilId: DataTypes.INTEGER
   }, {

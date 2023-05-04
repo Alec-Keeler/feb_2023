@@ -4,6 +4,29 @@ const { Op } = require("sequelize");
 
 const {Character, Ability, Affiliation, CharacterAbility} = require('../db/models')
 
+
+router.get('/agg', async (req, res) => {
+    // num characters, min age, max age, avg popularity
+    const characters = await Character.findAll()
+    // const count = await Character.count()
+
+    const minAge = await Character.min('age')
+    const maxAge = await Character.max('age')
+
+    const sumPop = await Character.sum('popularity')
+    const avgPop = sumPop / characters.length
+
+    // console.log(characters)
+
+    res.json({
+        characters,
+        numCharacters: characters.length,
+        minCharacterAge: minAge,
+        maxCharacterAge: maxAge,
+        avgPopularity: avgPop
+    })
+})
+
 // /characters/id
 router.get('/:id(\\d+)', async(req, res) => {
     const characterId = req.params.id
@@ -41,15 +64,17 @@ router.get('/', async(req, res) => {
 })
 
 router.post('/build', async(req, res) => {
-    const {name, age, powered, alias, popularity} = req.body
+    const {name, age, powered, alias, popularity, affilId} = req.body
 
     const character = Character.build({
         name, //name: name
         age,
         powered,
         alias,
-        popularity
+        popularity,
+        affilId
     })
+    console.log(character)
 
     // character.validate()
     await character.save()
@@ -138,5 +163,7 @@ router.get('/affiliations/:id', async(req, res) => {
 
     res.json(aff)
 })
+
+
 
 module.exports = router;
