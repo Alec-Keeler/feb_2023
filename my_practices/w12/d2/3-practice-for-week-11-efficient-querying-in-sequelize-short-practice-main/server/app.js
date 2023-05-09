@@ -38,12 +38,17 @@ app.get('/books', async (req, res) => {
 
     let books = await Book.findAll({
         include: Author,
+        where: {
+            price: {
+                [Op.lte]: req.query.maxPrice
+            }
+        }
     });
 
     // Filter by price if there is a maxPrice defined in the query params
-    if (req.query.maxPrice) {
-        books = books.filter(book => book.price < parseInt(req.query.maxPrice));
-    };
+    // if (req.query.maxPrice) {
+    //     books = books.filter(book => book.price < parseInt(req.query.maxPrice));
+    // };
     res.json(books);
 });
 

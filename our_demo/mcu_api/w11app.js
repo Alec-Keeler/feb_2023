@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 require('dotenv').config()
 const charRouter = require('./routes/characters')
+const w12CharRouter = require('./routes/w12characters')
 const { Affiliation, Character, Ability } = require('./db/models')
 
 
@@ -11,7 +12,7 @@ app.get('/test', (req, res) =>{
     res.send('api is live')
 })
 
-app.use('/characters', charRouter)
+app.use('/characters', w12CharRouter)
 
 app.get('/', async(req, res) => {
     const aff = await Affiliation.findOne({
