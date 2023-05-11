@@ -1,0 +1,18 @@
+password => hash algo => 3424kjg
+password => hash algo => 3424kjg
+
+kjhlwi4u5woirgwr => hash aglo => 3424kjg
+
+salting
+password + salt => hash algo => kshe4oituse.salt
+password + salt => hash algo => srfhdfuru.salt
+password + salt => hash algo => 456etyjfgh.salt
+password + salt => hash algo => k3w45yl.salt
+
+JWT?
+header
+    type of token, hash algo for signature
+payload
+    data, "claims" (jsonwebtoken npm package)
+signature
+    header + payload + secret key => hash algo => signature

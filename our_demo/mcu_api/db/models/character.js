@@ -57,22 +57,35 @@ module.exports = (sequelize, DataTypes) => {
     },
     alias: {
       type: DataTypes.STRING,
-      // validate: {
-      //   isPowered(value) {
-      //     console.log(this.powered)
-      //     console.log(value)
-      //     if (this.powered && !value) {
-      //       console.log('-=-=-=-=-=-=-=-=-==-=-')
-      //       throw new Error('If the character has powers, they must have an alias')
-      //     }
-      //   }
-      // }
     },
     popularity: DataTypes.NUMERIC(4, 2),
     affilId: DataTypes.INTEGER
   }, {
     sequelize,
     modelName: 'Character',
+    defaultScope: {
+      attributes: {
+        exclude: ['createdAt', 'updatedAt', 'popularity']
+      }
+    },
+    scopes: {
+      isSuper: {
+        where: {
+          powered: true
+        }
+      },
+      getByAffiliation(name) {
+        const { Affiliation } = require('../models')
+        return {
+          include: {
+            model: Affiliation,
+            where: {
+              name: name
+            }
+          },
+        }
+      }
+    }
   });
   return Character;
 };

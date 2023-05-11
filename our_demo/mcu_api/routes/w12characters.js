@@ -71,7 +71,15 @@ router.get('/search', async(req, res) => {
     })
 })
 
+router.get('/', async(req, res) => {
+    const chars = await Character.scope(['isSuper', 'defaultScope',
+    {
+        method: ['getByAffiliation', 'Avengers']
+    }
+]).findAll()
 
+    res.json({characters: chars})
+})
 
 
 
